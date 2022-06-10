@@ -1,0 +1,127 @@
+bmsce@bmsce-Precision-T1700:~$ sudo su hduser
+[sudo] password for bmsce: 
+hduser@bmsce-Precision-T1700:/home/bmsce$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+Starting namenodes on [localhost]
+hduser@localhost's password: 
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-bmsce-Precision-T1700.out
+bmhduser@localhost's password: 
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-bmsce-Precision-T1700.out
+Starting secondary namenodes [0.0.0.0]
+hduser@0.0.0.0's password: 
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-bmsce-Precision-T1700.out
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-bmsce-Precision-T1700.out
+hduser@localhost's password: 
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-bmsce-Precision-T1700.out
+
+hduser@bmsce-Precision-T1700:/home/bmsce$ jps
+5489 ResourceManager
+5107 DataNode
+5319 SecondaryNameNode
+4935 NameNode
+5944 Jps
+5821 NodeManager
+
+hduser@bmsce-Precision-T1700:/home/bmsce$ hdfs dfs -mkdir /abc
+mkdir: `/abc': File exists
+hduser@bmsce-Precision-T1700:/home/bmsce$ hdfs dfs -mkdir /harsh
+hduser@bmsce-Precision-T1700:/home/bmsce$ hadoop fs -ls/
+-ls/: Unknown command
+hduser@bmsce-Precision-T1700:/home/bmsce$ hadoop fs -ls /
+Found 19 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:10 /FFF
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:59 /LLL
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:04 /Welcome
+drwxr-xr-x   - hduser supergroup          0 2022-06-04 10:17 /abc
+drwxr-xr-x   - hduser supergroup          0 2022-06-04 10:18 /abc1
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 09:44 /cs185
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:58 /cse
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 15:04 /dishagubald
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:35 /duplicate
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:03 /file1
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 14:23 /harsh
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 14:56 /hello
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:40 /new
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:28 /praveen138
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:33 /sajjan
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:37 /sajjan2
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:03 /test
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:19 /user
+hduser@bmsce-Precision-T1700:/home/bmsce$ hdfs dfs -put /home/hduser/Desktop/Welcome.txt /harsh/WC.txt
+hduser@bmsce-Precision-T1700:/home/bmsce$ hdfs dfs -cat /harsh/WC.txt
+yo yo honey singh
+
+
+hduser@bmsce-Precision-T1700:~/Desktop$ cat Welcome.txt 
+yo yo honey singh
+
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -put /home/hduser/Desktop/Welcome.txt /harsh/WC1.txt
+put: `/harsh/WC1.txt': File exists
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -put /home/hduser/Desktop/Welcome.txt /harsh/WC21.txt
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -cat /harsh/WC21.txt
+\yo yo honey singh
+
+hduser@bmsce-Precision-T1700:~/Desktop$ hadoop fs -ls /harsh
+Found 3 items
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:28 /harsh/WC.txt
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:44 /harsh/WC1.txt
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:51 /harsh/WC21.txt
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -get /harsh/WC.txt /home/hduser/Downloads/WWC.txt
+get: `/home/hduser/Downloads/WWC.txt': File exists
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -get /harsh/WC.txt /home/hduser/Downloads/WWE.txt
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -getmerge /harsh/WC1.txt /harsh/WC21.txt /home/hduser/Desktop/new.txt
+hduser@bmsce-Precision-T1700:~/Desktop$ cat new.txt 
+yo yo honey singh
+
+yo yo honey singh
+
+
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -copyToLocal /harsh/WC1.txt /home/hduser/Desktop
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -cat /harsh/WC1.txt
+yo yo honey singh
+
+hduser@bmsce-Precision-T1700:~/Desktop$ hadoop fs -mv /harsh /vj
+hduser@bmsce-Precision-T1700:~/Desktop$ hadoop fs -ls /vj
+Found 3 items
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:28 /vj/WC.txt
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:44 /vj/WC1.txt
+-rw-r--r--   1 hduser supergroup         19 2022-06-06 14:51 /vj/WC21.txt
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs -cp /CSE/  /Manoj
+Error: Could not find or load main class .Manoj
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -ls/
+-ls/: Unknown command
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs dfs -ls /
+Found 19 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:10 /FFF
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:59 /LLL
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:04 /Welcome
+drwxr-xr-x   - hduser supergroup          0 2022-06-04 10:17 /abc
+drwxr-xr-x   - hduser supergroup          0 2022-06-04 10:18 /abc1
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 09:44 /cs185
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:58 /cse
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 15:04 /dishagubald
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:35 /duplicate
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:03 /file1
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 14:56 /hello
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:40 /new
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:28 /praveen138
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:33 /sajjan
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:37 /sajjan2
+drwxr-xr-x   - hduser supergroup          0 2022-06-01 15:03 /test
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2022-06-03 12:19 /user
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 14:51 /vj
+hduser@bmsce-Precision-T1700:~/Desktop$ hdfs -cp /CSE/ /LLL
+Error: Could not find or load main class .LLL
+hduser@bmsce-Precision-T1700:~/Desktop$ hadoop fs -cp /cse/ /LLL
+hduser@bmsce-Precision-T1700:~/Desktop$ hadoop fs -ls /LLL
+Found 3 items
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:59 /LLL/FFF
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:59 /LLL/LLL
+drwxr-xr-x   - hduser supergroup          0 2022-06-06 12:59 /LLL/cse
+hduser@bmsce-Precision-T1700:~/Desktop$ 
+
+
+

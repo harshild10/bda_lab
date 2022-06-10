@@ -1,0 +1,175 @@
+use students
+switched to db students
+> db
+students
+> show dbs
+admin   0.000GB
+config  0.000GB
+cs068   0.000GB
+local   0.000GB
+mydb    0.000GB
+> db.createCollection("students")
+{ "ok" : 1 }
+> db.students.drop()
+true
+> db.createCollection("students")
+{ "ok" : 1 }
+> db.student.insert({ studname: "Michelle Jacintha", grade: "VII", hobbies: "Internet Surfing" })
+WriteResult({ "nInserted" : 1 })
+> db.student.insert({ studname: "Aryan Davis", grade: "VII" }, { $set: { hobbies: "Skating" } }, { upsert: true })
+WriteResult({ "nInserted" : 1 })
+> db.student.find({ name: "Aryan David"  })
+> db.student.find({ name: "Aryan Davis"})
+> db.student.find({ name: "Aryan Davis"}).pretty()
+> db.student.find().pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.student.find({ name: /Aryan/}).pretty()
+> db.student.find({ studname: "Aryan Davis"}).pretty()
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.student.find({}, { studname: 1, grade: 1, _id: 0 })
+{ "studname" : "Michelle Jacintha", "grade" : "VII" }
+{ "studname" : "Aryan Davis", "grade" : "VII" }
+> db.student.find({ grade: { $eq: 'VII'  } }).pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.student.find({ hobbies: { $in: ["Chess", "Skating"]  }  }).pretty()
+{
+	"_id" : ObjectId("6253f239b9e5bfe25f8f5dbc"),
+	"grade" : "VII",
+	"studname" : "Aryan Davis",
+	"hobbies" : "Skating"
+}
+> db.student.find({ studname: /^M/ }).pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+> db.student.find({ studname: /e/  }).pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+> db.student.count()
+2
+> db.student.find().sort({ studname: -1  }).pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.students.save({ studname: "Vamsi", grade: "VI"  })
+WriteResult({ "nInserted" : 1 })
+> db.student.find()
+{ "_id" : ObjectId("6253efbcec2d8b6d842d96d5"), "studname" : "Michelle Jacintha", "grade" : "VII", "hobbies" : "Internet Surfing" }
+{ "_id" : ObjectId("6253f07cec2d8b6d842d96d6"), "studname" : "Aryan Davis", "grade" : "VII" }
+{ "_id" : ObjectId("6253f50937dadb905c50e7e8"), "studname" : "Vamsi", "grade" : "VI" }
+> db.student.update({ _id: ObjectId("6253f50937dadb905c50e7e8") }, { $set: { location: "Network" } })
+
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.update({ _id: ObjectId("6253f50937dadb905c50e7e8") }, { $unset: { location: "Network" } })
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.find({_id: ObjectId("6253f50937dadb905c50e7e8") },{studname:1,grade:1,_id:0});
+{ "studname" : "Vamsi", "grade" : "VI" }
+> db.student.find({grade:{$ne: "VII"}}).pretty();
+{
+	"_id" : ObjectId("6253f50937dadb905c50e7e8"),
+	"studname" : "Vamsi",
+	"grade" : "VI"
+}
+> db.student.find({studname:/s$/}).pretty();
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.student.update({ _id: ObjectId("6253f07cec2d8b6d842d96d6")}, { $unset: { location: "Blore" } })
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.student.count({ grade: "VII" })
+2
+> db.student.find({ grade: "VII" }).limit(3).pretty()
+{
+	"_id" : ObjectId("6253efbcec2d8b6d842d96d5"),
+	"studname" : "Michelle Jacintha",
+	"grade" : "VII",
+	"hobbies" : "Internet Surfing"
+}
+{
+	"_id" : ObjectId("6253f07cec2d8b6d842d96d6"),
+	"studname" : "Aryan Davis",
+	"grade" : "VII"
+}
+> db.food.insert({ _id: 1, fruits: ["grapes", "mango", "apple"] })
+WriteResult({ "nInserted" : 1 })
+> db.food.insert({ _id: 2, fruits: ["grapes", "mango", "cherry"] })
+WriteResult({ "nInserted" : 1 })
+> db.food.insert({ _id: 3, fruits: ["banana", "mango"] })
+WriteResult({ "nInserted" : 1 })
+> db.food.insert({ _id: 1, fruits: ["grapes", "mango", "apple"] })
+> db.food.find({ fruits: ["grapes", "mango", "apple"] }).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+> db.food.find({ "fruits.1": "mango" }).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+{ "_id" : 3, "fruits" : [ "banana", "mango" ] }
+> db.food.find({ "fruits": { $size: 2 }}).pretty()
+{ "_id" : 3, "fruits" : [ "banana", "mango" ] }
+> db.food.find({_id: 1}, { "fruits": { $slice: 2 }}).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango" ] }
+> db.food.find({ fruits: { $all: ["mango", "grapes"] }}).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ "_id" : 2, "fruits" : [ "grapes", "mango", "cherry" ] }
+> db.food.update({_id:3},{$set:{"fruits.1": "apple"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.food.update({_id:2},{$push:{price:{grapes:80,mango:200,cherry:100}}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Customers.aggregate({ $group: { _id: "$custID", TotAccBal: { $sum: "$AccBal" } } })
+{ "_id" : 3, "TotAccBal" : 200 }
+{ "_id" : 1, "TotAccBal" : 100 }
+{ "_id" : 4, "TotAccBal" : 500 }
+{ "_id" : 2, "TotAccBal" : 150 }
+
+
+
+
+
+
+
+
+
+
+
+
+

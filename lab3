@@ -1,0 +1,19 @@
+CREATE KEYSPACE lab3 WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 2};
+use lab3;
+CREATE TABLE emp_info( emp_id int PRIMARY KEY, emp_name text, designation text, doj timestamp, salary float, dept_name text);
+BEGIN BATCH  insert into emp_info (emp_id,emp_name,designation,doj,salary,dept_name) values (123,'rohit','professor','2017-07-07',75000,'mech'); insert into emp_info (emp_id,emp_name,designation,doj,salary,dept_name) values (243,'virat','professor','2017-04-07',175000,'cse'); APPLY BATCH;
+cqlsh:lab3> update emp_info
+        ... set emp_name = 'rohan', dept_name = 'ise'
+        ... where emp_id = 123;
+        select * from emp_info where emp_id in(123,243) ORDER BY salary  desc  allow filtering;
+cqlsh:lab3> select * from emp_info;
+alter table emp_info 
+        ... add projects set<text>;
+
+update emp_info set projects = projects + { 'xo'} where emp_id=123; 
+cqlsh:lab3> select * from emp_info;
+
+
+ insert into emp_info (emp_id,emp_name,designation,doj,salary,dept_name) values (723,'rohit','professor','2017-07-07',55000,'mech') using ttl 50;
+cqlsh:lab3> select * from emp_info where emp_id = 723;
+
